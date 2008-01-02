@@ -21,6 +21,7 @@ Patch0: 	wxhaskell-permissive-PIC.patch
 BuildRequires: 	ghc == %ghc_version
 BuildRequires: 	libwxgtk2.6-devel
 BuildRequires: 	haddock >= 0.7
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 
 %description
