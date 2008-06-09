@@ -90,12 +90,18 @@ rm %buildroot%{wxdir}/wx*.o
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -n %libname -p /sbin/ldconfig
+%endif
 
 %post -n ghc-%name
+%if %mdkversion < 200900
 /sbin/ldconfig
+%endif
 ghc-pkg-%{ghc_version} update -g %{wxdir}/wxcore.pkg
 ghc-pkg-%{ghc_version} update -g %{wxdir}/wx.pkg
 
@@ -106,7 +112,9 @@ if [ "$1" = 0 ]; then
   ghc-pkg-%{ghc_version} unregister wxcore || :
 fi
 
+%if %mdkversion < 200900
 %postun -n ghc-%name -p /sbin/ldconfig
+%endif
 
 %files -n %libname
 %defattr(-,root,root,-)
