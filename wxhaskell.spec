@@ -105,7 +105,8 @@ if [ "$1" = 0 ]; then
   ghc-pkg-%{ghc_version} unregister wx || :
   ghc-pkg-%{ghc_version} unregister wxcore || :
 fi
-/sbin/ldconfig
+
+%postun -n ghc-%name -p /sbin/ldconfig
 
 %files -n %libname
 %defattr(-,root,root,-)
