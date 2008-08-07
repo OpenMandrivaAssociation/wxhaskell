@@ -12,7 +12,7 @@
 Summary:	wxWindows Haskell binding
 Name:		wxhaskell
 Version:	0.10.3
-Release: 	%{mkrel 1}
+Release: 	%{mkrel 2}
 License:	wxWidgets
 Group: 		Development/Other
 URL: 		http://wxhaskell.sourceforge.net
@@ -23,22 +23,25 @@ Patch0:		wxhaskell-0.10.3-disableapidocs.patch
 BuildRequires:	ghc
 BuildRequires:	wxgtku2.6-devel
 BuildRequires:	haddock >= 0.7
+#BuildRequires:	haskell-macros
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 wxHaskell is a Haskell binding to the portable wxWidgets GUI library.
 
-%package -n ghc-%{name}-core
+%package -n haskell-wxcore
 Summary:	Haskell binding for wxGTK2 devel files
 Group:		Development/Other
 Requires:	ghc == %{ghc_version}
 Requires:	%{libname} == %{version}
 Conflicts:	ghc-%{name} < %{version}-%{release}
+Obsoletes:	ghc-%{name}-core < %{version}-%{release}
+Provides:	ghc-%{name}-core = %{version}-%{release}
 # for ghc-pkg
 Requires(pre):	ghc == %{ghc_version}
 Requires(post):	ghc == %{ghc_version}
 
-%description -n ghc-%{name}-core
+%description -n haskell-wxcore
 wxHaskell is a Haskell binding to the portable wxWidgets GUI library.
 This package contains the wxhaskell package for ghc.
 
@@ -82,6 +85,10 @@ mv %{buildroot}%{wxdir}/libwxc-*.so %{buildroot}%{_libdir}
 # remove object files and generated them at pkg install time
 rm %{buildroot}%{wxdir}/wx*.o
 
+# remove wx first as we're not building it here
+#rm -rf wx
+#{_cabal_rpm_gen_deps}
+
 %clean
 rm -rf %{buildroot}
 
@@ -93,20 +100,20 @@ rm -rf %{buildroot}
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
 
-%post -n ghc-%{name}-core
+%post -n haskell-wxcore
 %if %mdkversion < 200900
 /sbin/ldconfig
 %endif
 ghc-pkg-%{ghc_version} update -g %{wxdir}/wxcore.pkg
 
-%preun -n ghc-%{name}-core
+%preun -n haskell-wxcore
 if [ "$1" = 0 ]; then
   rm %{wxdir}/wx*.o
   ghc-pkg-%{ghc_version} unregister wxcore || :
 fi
 
 %if %mdkversion < 200900
-%postun -n ghc-%{name} -p /sbin/ldconfig
+%postun -n haskell-wxcore -p /sbin/ldconfig
 %endif
 
 %files -n %{libname}
@@ -114,9 +121,10 @@ fi
 %{_libdir}/libwxc-*.so
 %doc *.txt
 
-%files -n ghc-%{name}-core
+%files -n haskell-wxcore
 %defattr(-,root,root,-)
 %{wxdir}
+#_cabal_rpm_files
 
 %files doc
 %defattr(-,root,root,-)
