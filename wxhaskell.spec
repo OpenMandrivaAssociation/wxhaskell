@@ -1,5 +1,5 @@
 # The wxhaskell build process has to be split into two steps these
-# days, so the previous wxhaslell .src.rpm is now split into two:
+# days, so the previous wxhaskell .src.rpm is now split into two:
 # wxhaskell and wxhaskell-wx . It would be better to have
 # wxhaskell-core and wxhaskell , but this keeps history better.
 # wxhaskell builds the wxcore part. wxhaskell-wx builds the wx part.
@@ -9,19 +9,28 @@
 %define ghc_version %(rpm -q ghc | cut -d- -f2)
 %define libname %mklibname %name
 
+%define rel	1
+%define darcs	20090214
+%if %darcs
+%define release		%mkrel 0.%{darcs}.%{rel}
+%define distname	%{name}-%{darcs}.tar.lzma
+%define dirname		%{name}
+%else
+%define release		%mkrel %{rel}
+%define distname	%{name}-src-%{version}.zip
+%define dirname		%{name}-%{version}
+%endif
+
 Summary:	wxWindows Haskell binding
 Name:		wxhaskell
-Version:	0.10.3
-Release: 	%{mkrel 2}
+Version:	0.11.1
+Release: 	%{release}
 License:	wxWidgets
 Group: 		Development/Other
 URL: 		http://wxhaskell.sourceforge.net
-Source0: 	http://downloads.sourgeforge.net/%{name}/%{name}-src-%{version}.zip
-# Disable the API documentation build - it doesn't work due to haddock
-# problems (boy, I never thought I'd write THAT) - AdamW 2008/08
-Patch0:		wxhaskell-0.10.3-disableapidocs.patch
+Source0: 	http://downloads.sourgeforge.net/%{name}/%{distname}
 BuildRequires:	ghc
-BuildRequires:	wxgtku2.6-devel
+BuildRequires:	wxgtku-devel
 BuildRequires:	haddock >= 0.7
 #BuildRequires:	haskell-macros
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -64,14 +73,16 @@ This package contains the documentation in html format.
 %define wxdir %{_libdir}/ghc-%{ghc_version}/wx
 
 %prep
-%setup -q
-%patch0 -p1 -b .apidoc
+%setup -q -n %{dirname}
 
 %build
+%if %darcs
+chmod 0755 configure
+%endif
 ./configure --hc=ghc-%{ghc_version} --hcpkg=ghc-pkg-%{ghc_version} --libdir=%{wxdir} --with-opengl --wx-config=wx-config-unicode
 # build fails with %make on a multiproc system
 make
-make doc
+#make doc
 
 %install
 rm -rf %{buildroot}
@@ -128,5 +139,6 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-%doc dist/doc/html/* samples
+%doc samples
+# dist/doc/html/* 
 
