@@ -9,7 +9,7 @@
 %define ghc_version %(rpm -q ghc | cut -d- -f2)
 %define libname %mklibname %name
 
-%define rel	2
+%define rel	1
 %define darcs	20090214
 %if %darcs
 %define release		%mkrel 0.%{darcs}.%{rel}
@@ -23,7 +23,7 @@
 
 Summary:	wxWindows Haskell binding
 Name:		wxhaskell
-Version:	0.11.1
+Version:	0.12.1.6
 Release: 	%{release}
 License:	wxWidgets
 Group: 		Development/Other
