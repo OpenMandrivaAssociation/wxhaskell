@@ -142,3 +142,94 @@ fi
 %doc samples
 # dist/doc/html/* 
 
+
+
+%changelog
+* Wed Mar 16 2011 Stéphane Téletchéa <steletch@mandriva.org> 0.12.1.6-0.20090214.1mdv2011.0
++ Revision: 645490
+- update to new version 0.12.1.6
+
+* Sun Sep 20 2009 Thierry Vignaud <tv@mandriva.org> 0.11.1-0.20090214.2mdv2010.0
++ Revision: 445827
+- rebuild
+
+* Sun Feb 15 2009 Adam Williamson <awilliamson@mandriva.org> 0.11.1-0.20090214.1mdv2009.1
++ Revision: 340452
+- drop disableapidocs.patch and just disable doc build entirely (doesn't work
+  due to a ghc problem now)
+- build against wxgtk 2.8 unicode
+- bump to latest darcs (fixes problems with wxgtk 2.8)
+- add conditionals for darcs build
+
+* Fri Aug 08 2008 Adam Williamson <awilliamson@mandriva.org> 0.10.3-2mdv2009.0
++ Revision: 267492
+- add use of haskell dep macro, but commented out as it doesn't currently work
+- rename main package haskell-wxcore to comply with haskell policy
+
+* Fri Aug 08 2008 Adam Williamson <awilliamson@mandriva.org> 0.10.3-1mdv2009.0
++ Revision: 267420
+- rebuild for new era
+- correct doc location
+- own wxdir to stop it being orphaned on package removal
+- don't do all the post-install stuff for wx, only wxcore (due to split)
+- update the make commands
+- correct the configure command for unicode wxgtk
+- add conflict to ensure smooth upgrade
+- rename main package to ghc-wxhaskell-core to reflect package split
+- drop permissive-PIC.patch (no longer necessary)
+- add disableapidocs.patch (disable API doc build, it doesn't work)
+- br unicode wxgtk
+- don't version the ghc buildrequire (won't work on a clean buildroot)
+- correct license
+- add comment explaining package split
+- drop unnecessary defines
+- new release 0.10.3
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+    - ldconfig must be done in %%postun, not %%preun
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+
+* Mon May 15 2006 Gaetan Lehmann <gaetan.lehmann@jouy.inra.fr> 0.9.4.1-2mdk
+- rebuild for new ghc
+
+* Thu Oct 20 2005 Gaetan Lehmann <gaetan.lehmann@jouy.inra.fr> 0.9.4.1-1mdk
+- 9.4-1
+- initial mandrake contrib
+- Patch0: fix build on x86_64
+- split in more packages
+
+* Mon Feb 28 2005 Jens Petersen <petersen@redhat.com> - 0.9-1
+- build with opengl
+- use ghcver
+- build with CXX wrapper PIC on x86_64
+  - add wxhaskell-0.9-cxx-PIC-x86_64.patch
+- install with install-files target
+  - wxhaskell-0.2-ghc-pkg.patch no longer needed
+- move samples to doc subpackage
+- install libwxc so in libdir to help package config
+- remove object files from package and generate them at package install time
+- install pkg config files in wxdir
+
+* Thu Mar 25 2004 Jens Petersen <petersen@redhat.com> - 0.6-2
+- update to 0.6
+- build with ghc-6.2.1
+- update summaries, groups and descriptions
+- buildrequire haddock and build the documentation
+- add -doc subpackage
+- buildrequire wxGTK2-gl
+
+* Fri Sep 19 2003 Jens Petersen <petersen@haskell.org> - 0.2-2
+- install under ghc-%%{ghc_version}/wxhaskell, except libwxc.so
+- post and preun scripts
+- add some docs
+
+* Fri Sep 19 2003 Jens Petersen <petersen@haskell.org> - 0.2-1
+- Initial build.
+
