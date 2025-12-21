@@ -29,6 +29,11 @@ License:	wxWidgets
 Group: 		Development/Other
 URL: 		https://wxhaskell.sourceforge.net
 Source0: 	http://downloads.sourgeforge.net/%{name}/%{distname}
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	ghc
 BuildRequires:	wxgtku-devel
 BuildRequires:	haddock >= 0.7
